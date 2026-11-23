@@ -32,35 +32,52 @@ if ($dbUrl) {
 
 try {
     $dsn = "mysql:host={$host};port={$port};dbname={$db};charset=utf8mb4";
-    $pdo = new PDO(
-        $dsn,
-        $user,
-        $pass,
-        [
-            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES   => false,
-        ]
-    );
+    $options = [
+        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES   => false,
+    ];
+    if (defined('PDO::MYSQL_ATTR_MULTI_STATEMENTS')) {
+        $options[PDO::MYSQL_ATTR_MULTI_STATEMENTS] = true;
+    }
+
+    $pdo = new PDO($dsn, $user, $pass, $options);
 
     // Otomatis inisialisasi tabel jika database baru/kosong (misal saat deploy awal di cloud/Railway)
     try {
-        $tableCheck = $pdo->query("SHOW TABLES LIKE 'users'")->fetch();
+        $tableCheck = $pdo->query("SHOW TABLES LIKE 'rules'")->fetch();
         if (!$tableCheck) {
             $sqlFile = dirname(__DIR__) . '/database/fixit.sql';
             if (file_exists($sqlFile)) {
                 $sql = file_get_contents($sqlFile);
                 if ($sql) {
-                    $sql = preg_replace('/CREATE\s+DATABASE[^;]+;/i', '', $sql);
-                    $sql = preg_replace('/USE\s+[^;]+;/i', '', $sql);
-                    $pdo->exec($sql);
+                    $sql = preg_replace('/\bCREATE\s+DATABASE\b[^;]+;/is', '', $sql);
+                    $sql = preg_replace('/\bUSE\b\s+[^;]+;/is', '', $sql);
+
+                    $lines = explode("\n", $sql);
+                    $clean = '';
+                    foreach ($lines as $line) {
+                        $trimmed = trim($line);
+                        if (str_starts_with($trimmed, '--') || str_starts_with($trimmed, '#')) {
+                            continue;
+                        }
+                        $clean .= $line . "\n";
+                    }
+
+                    $queries = array_filter(array_map('trim', explode(';', $clean)));
+                    foreach ($queries as $query) {
+                        if ($query !== '') {
+                            $pdo->exec($query);
+                        }
+                    }
                 }
             }
         }
     } catch (Throwable $migrationError) {
-        error_log('Database auto-init notice: ' . $migrationError->getMessage());
+        error_log('Database auto-init error: ' . $migrationError->getMessage());
+        throw new RuntimeException('Inisialisasi database otomatis gagal: ' . $migrationError->getMessage(), 0, $migrationError);
     }
-} catch (PDOException $e) {
+} catch (Throwable $e) {
     http_response_code(500);
     $isCloud = (bool) (getenv('PORT') || getenv('RAILWAY_ENVIRONMENT') || file_exists('/.dockerenv'));
     $hint = '';
