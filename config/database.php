@@ -11,7 +11,9 @@ $user = 'root';
 $pass = '';
 $db   = 'fixit';
 
-if ($dbUrl = getenv('DATABASE_URL')) {
+$dbUrl = getenv('DATABASE_URL') ?: (getenv('MYSQL_URL') ?: (getenv('MYSQL_PRIVATE_URL') ?: null));
+
+if ($dbUrl) {
     $parts = parse_url($dbUrl);
     if (!empty($parts['host'])) {
         $host = $parts['host'];
@@ -21,11 +23,11 @@ if ($dbUrl = getenv('DATABASE_URL')) {
         $db   = ltrim($parts['path'] ?? 'fixit', '/');
     }
 } else {
-    $host = getenv('MYSQLHOST') ?: (getenv('DB_HOST') ?: 'localhost');
-    $port = (string) (getenv('MYSQLPORT') ?: (getenv('DB_PORT') ?: '3306'));
-    $user = getenv('MYSQLUSER') ?: (getenv('DB_USER') ?: 'root');
-    $pass = getenv('MYSQLPASSWORD') !== false ? (string) getenv('MYSQLPASSWORD') : (getenv('DB_PASS') !== false ? (string) getenv('DB_PASS') : '');
-    $db   = getenv('MYSQLDATABASE') ?: (getenv('DB_NAME') ?: 'fixit');
+    $host = getenv('MYSQLHOST') ?: (getenv('MYSQL_HOST') ?: (getenv('DB_HOST') ?: 'localhost'));
+    $port = (string) (getenv('MYSQLPORT') ?: (getenv('MYSQL_PORT') ?: (getenv('DB_PORT') ?: '3306')));
+    $user = getenv('MYSQLUSER') ?: (getenv('MYSQL_USER') ?: (getenv('DB_USER') ?: 'root'));
+    $pass = getenv('MYSQLPASSWORD') !== false ? (string) getenv('MYSQLPASSWORD') : (getenv('MYSQL_PASSWORD') !== false ? (string) getenv('MYSQL_PASSWORD') : (getenv('DB_PASS') !== false ? (string) getenv('DB_PASS') : ''));
+    $db   = getenv('MYSQLDATABASE') ?: (getenv('MYSQL_DATABASE') ?: (getenv('DB_NAME') ?: 'fixit'));
 }
 
 try {
@@ -60,8 +62,16 @@ try {
     }
 } catch (PDOException $e) {
     http_response_code(500);
+    $isCloud = (bool) (getenv('PORT') || getenv('RAILWAY_ENVIRONMENT') || file_exists('/.dockerenv'));
+    $hint = '';
+    if ($isCloud && $host === 'localhost') {
+        $hint = '<br><br><strong>Penyebab:</strong> Aplikasi berjalan di Railway tetapi variabel database belum dihubungkan ke service ini. '
+              . 'Buka service <strong>fixit</strong> di Railway &rarr; tab <strong>Variables</strong> &rarr; tambahkan variabel <strong>DATABASE_URL</strong> '
+              . 'yang mereferensikan service MySQL Anda.';
+    }
     exit(
         'Koneksi database gagal. Pastikan MySQL berjalan dan database <strong>' . htmlspecialchars($db) . '</strong> sudah diimpor. '
         . 'Detail: ' . htmlspecialchars($e->getMessage())
+        . $hint
     );
 }
