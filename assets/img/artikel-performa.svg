@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="Ilustrasi pengukur suhu dan performa">
+    <rect width="800" height="450" fill="#eef3f5"/>
+    <circle cx="660" cy="90" r="120" fill="#e0f2f6"/>
+    <circle cx="110" cy="390" r="100" fill="#dbecef"/>
+
+    <path d="M170 300a230 230 0 0 1 460 0" fill="none" stroke="#0b3948" stroke-width="54" stroke-linecap="round"/>
+    <path d="M170 300a230 230 0 0 1 460 0" fill="none" stroke="#0e7490" stroke-width="26" stroke-linecap="round"/>
+    <path d="M194 282a200 200 0 0 1 220-166" fill="none" stroke="#22c55e" stroke-width="26" stroke-linecap="round"/>
+    <path d="M500 128a200 200 0 0 1 116 154" fill="none" stroke="#b45309" stroke-width="26" stroke-linecap="round"/>
+
+    <circle cx="400" cy="300" r="26" fill="#0b3948"/>
+    <path d="m400 300 96-96" stroke="#0b3948" stroke-width="14" stroke-linecap="round"/>
+    <circle cx="400" cy="300" r="10" fill="#fff"/>
+
+    <rect x="330" y="340" width="140" height="40" rx="12" fill="#0b3948"/>
+    <path d="M360 360h80" stroke="#22c55e" stroke-width="6" stroke-linecap="round"/>
+</svg>

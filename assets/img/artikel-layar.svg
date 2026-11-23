@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="Ilustrasi laptop dengan layar retak">
+    <rect width="800" height="450" fill="#eef3f5"/>
+    <circle cx="690" cy="70" r="130" fill="#e0f2f6"/>
+    <circle cx="100" cy="400" r="110" fill="#dbecef"/>
+
+    <rect x="205" y="96" width="390" height="238" rx="16" fill="#0b3948"/>
+    <rect x="221" y="112" width="358" height="206" rx="8" fill="#0e7490"/>
+    <rect x="221" y="112" width="358" height="206" rx="8" fill="url(#kaca)"/>
+
+    <path d="M400 112 360 210l58 30-44 78" fill="none" stroke="#d9f1f5" stroke-width="3" stroke-linejoin="round"/>
+    <path d="m360 210 96-42M418 240l78 22M374 318l-42 30" fill="none" stroke="#d9f1f5" stroke-width="2" opacity=".7"/>
+
+    <path d="M170 352h460l26 34a12 12 0 0 1-10 18H154a12 12 0 0 1-10-18z" fill="#155e75"/>
+    <rect x="352" y="360" width="96" height="8" rx="4" fill="#0b3948" opacity=".5"/>
+
+    <circle cx="640" cy="330" r="46" fill="#fffaeb" stroke="#b45309" stroke-width="3"/>
+    <path d="M640 308v22m0 16h.01" stroke="#b45309" stroke-width="5" stroke-linecap="round"/>
+
+    <defs>
+        <linearGradient id="kaca" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#22a6b3" stop-opacity=".55"/>
+            <stop offset="1" stop-color="#0e7490" stop-opacity="0"/>
+        </linearGradient>
+    </defs>
+</svg>

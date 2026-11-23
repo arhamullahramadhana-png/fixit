@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="Ilustrasi baterai laptop dan charger">
+    <rect width="800" height="450" fill="#eef3f5"/>
+    <circle cx="120" cy="80" r="120" fill="#e0f2f6"/>
+    <circle cx="700" cy="400" r="130" fill="#dbecef"/>
+
+    <rect x="210" y="150" width="340" height="160" rx="24" fill="#0b3948"/>
+    <rect x="240" y="180" width="280" height="100" rx="12" fill="#155e75"/>
+    <rect x="255" y="195" width="70" height="70" rx="8" fill="#22c55e"/>
+    <rect x="335" y="195" width="70" height="70" rx="8" fill="#4ade80"/>
+    <rect x="415" y="195" width="70" height="70" rx="8" fill="#86efac"/>
+    <rect x="550" y="200" width="28" height="60" rx="8" fill="#0b3948"/>
+
+    <path d="M610 230c0-26 44-26 44 0 0 20-24 22-24 42" fill="none" stroke="#0e7490" stroke-width="8" stroke-linecap="round"/>
+    <path d="m602 300 66-118" stroke="#0e7490" stroke-width="8" stroke-linecap="round"/>
+    <path d="m598 232 34-5-16 34" fill="#0e7490"/>
+
+    <circle cx="640" cy="120" r="40" fill="#fffaeb" stroke="#b45309" stroke-width="3"/>
+    <path d="m646 100-16 24h14l-6 20 20-26h-14z" fill="#b45309"/>
+</svg>
